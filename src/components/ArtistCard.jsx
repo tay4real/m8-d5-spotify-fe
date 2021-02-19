@@ -9,13 +9,8 @@ const mapDispatchToProps = (dispatch) => ({
   getArtist: (url, setState) => {
     dispatch(async (dispatch) => {
       try {
-        const response = await fetch(url, {
-          headers: {
-            "x-rapidapi-key":
-              "dc976bef57mshfe1863c26e99ba2p1cc559jsn861f89a53ff3",
-            "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-          },
-        });
+        console.log(url);
+        const response = await fetch(url);
         const data = await response.json();
 
         if (response.ok) {
@@ -39,8 +34,8 @@ class ArtistCard extends React.Component {
   fetchArtist = async () => {
     this.setState({ loading: true });
 
-    let url =
-      "https://deezerdevs-deezer.p.rapidapi.com/artist/" + this.props.id;
+    let url = `${process.env.REACT_APP_BE_URL}/artists/${this.props.id}`;
+    console.log(url);
     await this.props.getArtist(url, () => {
       this.setState({ loading: false });
     });

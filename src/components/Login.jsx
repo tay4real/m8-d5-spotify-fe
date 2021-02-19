@@ -3,6 +3,7 @@ import { Container, Form, Button } from "react-bootstrap";
 import logo from "./assetss/Spotify-Logo-Black.png";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const mapStateToProps = (state) => state;
 
@@ -17,6 +18,22 @@ class Login extends React.Component {
   state = {
     username: "",
     password: "",
+  };
+
+  login = async () => {
+    const res = await axios("http://localhost:3007/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        username: this.state.username,
+        password: this.state.password,
+      },
+      withCredentials: true, // use cookies
+    });
+
+    localStorage.setItem("accessToken", res.data.accessToken);
   };
 
   render() {
@@ -61,12 +78,14 @@ class Login extends React.Component {
 
             <div className="row mb-2">
               <div className="col col-md-6 m-auto">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary rounded-pill w-100"
-                >
-                  <i class="fab fa-google ml-"></i> CONTINUE WITH GOOGLE
-                </button>
+                <a href="http://localhost:3007/users/googleLogin">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary rounded-pill w-100"
+                  >
+                    <i class="fab fa-google ml-"></i> CONTINUE WITH GOOGLE
+                  </button>
+                </a>
               </div>
             </div>
           </Container>
@@ -128,10 +147,10 @@ class Login extends React.Component {
                   className="btn loginButton text-white  w-100 rounded-pill mb-5"
                   style={{ backgroundColor: "#15883e" }}
                   onClick={() => {
-                    this.props.setUserName(this.state.username);
-                    this.props.setPassword(this.state.password);
-                    this.props.setLoggedIn(true);
-                    this.props.history.push("/home");
+                    // this.props.setUserName(this.state.username);
+                    // this.props.setPassword(this.state.password);
+                    // this.props.setLoggedIn(true);
+                    this.login();
                   }}
                 >
                   LOG IN

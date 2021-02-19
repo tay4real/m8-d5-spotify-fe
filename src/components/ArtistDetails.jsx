@@ -12,6 +12,7 @@ import {
 import AddComment from "./AddComment";
 import CommentList from "./CommentList";
 import { connect } from "react-redux";
+import axios from "axios";
 
 const mapStateToProps = (state) => state;
 
@@ -25,25 +26,12 @@ const mapDispatchToProps = (dispatch) => ({
   getTheArtist: (url, sortTrack, setState) => {
     dispatch(async (dispatch) => {
       try {
-        const response = await fetch(url, {
-          headers: {
-            "x-rapidapi-key":
-              "dc976bef57mshfe1863c26e99ba2p1cc559jsn861f89a53ff3",
-            "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-          },
-        });
+        const response = await fetch(url);
         const data = await response.json();
         if (response.ok) {
           dispatch({ type: "GET_ARTIST", payload: data });
-          let secondurl =
-            "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + data.name;
-          const response = await fetch(secondurl, {
-            headers: {
-              "x-rapidapi-key":
-                "dc976bef57mshfe1863c26e99ba2p1cc559jsn861f89a53ff3",
-              "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-            },
-          });
+          let secondurl = `${process.env.REACT_APP_BE_URL}/search/${data.name}`;
+          const response = await fetch(secondurl);
           let album = await response.json();
 
           let map = new Map();
@@ -88,9 +76,7 @@ class ArtistDetails extends React.Component {
   };
 
   fetchArtist = () => {
-    let artistUrl =
-      "https://deezerdevs-deezer.p.rapidapi.com/artist/" +
-      this.props.match.params.id;
+    let artistUrl = `${process.env.REACT_APP_BE_URL}/artists/${this.props.match.params.id}`;
 
     this.props.getTheArtist(artistUrl, this.sortTrack, () => {
       this.setState({ loading: false });
@@ -117,15 +103,7 @@ class ArtistDetails extends React.Component {
     this.setState({ loading: true });
     try {
       let response = await fetch(
-        "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + query,
-        {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key":
-              "dc976bef57mshfe1863c26e99ba2p1cc559jsn861f89a53ff3",
-            "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-          },
-        }
+        `${process.env.REACT_APP_BE_URL}/artists/search/${query}`
       );
 
       let album = await response.json();
