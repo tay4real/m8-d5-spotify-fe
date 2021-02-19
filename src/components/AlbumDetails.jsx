@@ -1,78 +1,70 @@
-import React from "react";
-import { Col, Row, Container, Table } from "react-bootstrap";
-import CommentList from "./CommentList";
-import AddComment from "./AddComment";
-import { connect } from "react-redux";
+import React from "react"
+import { Col, Row, Container, Table } from "react-bootstrap"
+import CommentList from "./CommentList"
+import AddComment from "./AddComment"
+import { connect } from "react-redux"
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => state
 
 const mapDispatchToProps = (dispatch) => ({
   addAlbumWithThunk: (id) => {
     dispatch(async (dispatch, getState) => {
       try {
         let response = await fetch(
-          "https://deezerdevs-deezer.p.rapidapi.com/album/" + id,
-          {
-            method: "GET",
-            headers: {
-              "x-rapidapi-key":
-                "dc976bef57mshfe1863c26e99ba2p1cc559jsn861f89a53ff3",
-              "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-            },
-          }
-        );
-        let album = await response.json();
-        let tracks = album.tracks.data;
-        console.log(album);
+          `${process.env.REACT_APP_BE_URL}/albums/${id}`
+        )
+        let album = await response.json()
+        let tracks = album.tracks.data
+        console.log(album)
         if (response.ok) {
           dispatch({
             type: "ADD_ALBUM",
             payload: album,
-          });
+          })
           dispatch({
             type: "ADD_TRACKS",
             payload: tracks,
-          });
+          })
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    });
+    })
   },
   addLike: (song) => {
     dispatch({
       type: "ADD_LIKE",
       payload: song,
-    });
+    })
   },
   removeLike: (song) => {
     dispatch({
       type: "REMOVE_LIKE",
       payload: song,
-    });
+    })
   },
   currentSong: (song) => {
     dispatch({
       type: "GET_SONG",
       payload: song,
-    });
+    })
   },
-});
+})
 
 class AlbumDetails extends React.Component {
   state = {
     submitCounter: 0,
     deleteCounter: 0,
     editComment: { comment: {}, editCounter: 0 },
-  };
+  }
 
   componentDidMount = () => {
-    this.props.addAlbumWithThunk(this.props.match.params.id);
-  };
+    this.props.addAlbumWithThunk(this.props.match.params.id)
+  }
   render() {
-    const album = this.props.album.albums;
+    const album = this.props.album.albums
 
-    const tracks = this.props.album.tracks;
+    const tracks = this.props.album.tracks
 
     return (
       <>
@@ -168,7 +160,7 @@ class AlbumDetails extends React.Component {
                               onClick={() => {
                                 this.props.history.push(
                                   "/artistDetails/" + tracks.artist.id
-                                );
+                                )
                               }}
                             >
                               {tracks.artist.name}
@@ -272,8 +264,8 @@ class AlbumDetails extends React.Component {
           </Container>
         </Col>
       </>
-    );
+    )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlbumDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumDetails)
