@@ -12,7 +12,6 @@ import {
 import AddComment from "./AddComment";
 import CommentList from "./CommentList";
 import { connect } from "react-redux";
-import axios from "axios";
 
 const mapStateToProps = (state) => state;
 
