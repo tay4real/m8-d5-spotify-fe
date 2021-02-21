@@ -1,33 +1,23 @@
 import React from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import logo from "./assetss/Spotify-Logo-Black.png";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => ({
-  setUserName: (username) =>
-    dispatch({ type: "SET_USER_NAME", payload: username }),
-  setPassword: (password) =>
-    dispatch({ type: "SET_PASSWORD", payload: password }),
-  setLoggedIn: (loggedIn) => dispatch({ type: "SET_LOGIN", payload: loggedIn }),
-});
 class Login extends React.Component {
   state = {
-    username: "",
+    email: "",
     password: "",
   };
 
   login = async () => {
-    const res = await axios("http://localhost:3007/users/login", {
+    const res = await axios(`${process.env.REACT_APP_BE_URL}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       data: {
-        username: this.state.username,
+        email: this.state.email,
         password: this.state.password,
       },
       withCredentials: true, // use cookies
@@ -52,33 +42,37 @@ class Login extends React.Component {
             </div>
             <div className="row mb-2">
               <div className="col col-md-6 m-auto">
-                <button
-                  type="button"
-                  className="btn text-white   rounded-pill w-100"
-                  style={{ backgroundColor: "#3b5998" }}
-                >
-                  <i className="fab fa-facebook ml-2"></i> CONTINUE WITH
-                  FACEBOOK
-                </button>
+                <a>
+                  <button
+                    type="button"
+                    className="btn text-white   rounded-pill w-100"
+                    style={{ backgroundColor: "#3b5998" }}
+                  >
+                    <i className="fab fa-facebook ml-2"></i> CONTINUE WITH
+                    FACEBOOK
+                  </button>
+                </a>
               </div>
             </div>
 
             <div className="row mb-2">
               <div className="col col-md-6 m-auto">
-                <button
-                  type="button"
-                  className="btn text-white  rounded-pill w-100"
-                  style={{ backgroundColor: "#000" }}
-                >
-                  <i className="fab fa-apple ml-2"></i> {"   "} CONTINUE WITH
-                  APPLE
-                </button>
+                <a>
+                  <button
+                    type="button"
+                    className="btn text-white  rounded-pill w-100"
+                    style={{ backgroundColor: "#000" }}
+                  >
+                    <i className="fab fa-apple ml-2"></i> {"   "} CONTINUE WITH
+                    SPOTIFY
+                  </button>
+                </a>
               </div>
             </div>
 
             <div className="row mb-2">
               <div className="col col-md-6 m-auto">
-                <a href="http://localhost:3007/users/googleLogin">
+                <a href={`${process.env.REACT_APP_BE_URL}/users/googleLogin`}>
                   <button
                     type="button"
                     class="btn btn-outline-secondary rounded-pill w-100"
@@ -95,18 +89,16 @@ class Login extends React.Component {
           <Form className="container-fluid">
             <div className="row">
               <div className="col col-md-6 m-auto">
-                <Form.Label>Email address or username</Form.Label>
+                <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Email address or username"
-                  id="username"
-                  name="username"
+                  placeholder="Email address"
+                  id="email"
+                  name="email"
                   onChange={(e) =>
-                    this.setState({ username: e.currentTarget.value }, () => {
-                      console.log(this.state);
-                    })
+                    this.setState({ email: e.currentTarget.value })
                   }
-                  value={this.state.username}
+                  value={this.state.email}
                 />
               </div>
             </div>
@@ -146,12 +138,7 @@ class Login extends React.Component {
                   type="button"
                   className="btn loginButton text-white  w-100 rounded-pill mb-5"
                   style={{ backgroundColor: "#15883e" }}
-                  onClick={() => {
-                    // this.props.setUserName(this.state.username);
-                    // this.props.setPassword(this.state.password);
-                    // this.props.setLoggedIn(true);
-                    this.login();
-                  }}
+                  onClick={this.login}
                 >
                   LOG IN
                 </button>
@@ -184,4 +171,4 @@ class Login extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
