@@ -30,7 +30,7 @@ class App extends React.Component {
                   {...props}
                   loggedin={() => this.setState({ loggedin: true })}
                 />
-              )}
+              )}s
             />
             <Route path="/signup" exact component={Signup} />
             <Route path="/app" exact component={MainComponent} />
