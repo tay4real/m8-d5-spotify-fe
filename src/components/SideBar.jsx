@@ -16,6 +16,16 @@ class SideBar extends React.Component {
     searchString: this.props.searchStr,
   };
 
+  logout = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_BE_URL}/users/logout`
+    );
+
+    if (response.ok) {
+      this.props.history.push("/");
+    }
+  };
+
   searchHandler = (e) => {
     if (e.keyCode === 13 || e.key === "Enter") {
       this.props.searchString(e.currentTarget.value);
@@ -41,13 +51,13 @@ class SideBar extends React.Component {
             <img className="ml-4" src={logo} alt="Spotify" width="55%" />
           </div>
           <div className="d-flex flex-column">
-            <Link className="pl-4 mb-2 linkBorder" to="/home">
+            <Link className="pl-4 mb-2 linkBorder" to="app/home">
               <span className="spotify-text-primary spotify-text-secondary d-flex flex-row pt-1">
                 <i className="fas fa-home mr-3"></i>
                 <h6>Home</h6>
               </span>
             </Link>
-            <Link className="pl-4 mb-2" to="/home">
+            <Link className="pl-4 mb-2" to="app/home">
               <span className="spotify-text-primary d-flex flex-row pt-1">
                 <i className="fas fa-search mr-3"></i>
                 <h6>Search</h6>
@@ -64,7 +74,7 @@ class SideBar extends React.Component {
                 />
               </span>
             </Link>
-            <Link className="pl-4 mb-2" to="/favorites">
+            <Link className="pl-4 mb-2" to="app/favorites">
               <span className="spotify-text-primary d-flex flex-row pt-1">
                 <i className="fas fa-swatchbook mr-3"></i>
                 <h6>Your Likes</h6>
@@ -96,10 +106,7 @@ class SideBar extends React.Component {
                 <button
                   class="btn login-btn btn-danger m-0"
                   type="button"
-                  onClick={() => {
-                    this.props.setLoggedOut(false);
-                    this.props.history.push("/");
-                  }}
+                  onClick={this.logout}
                 >
                   Logout
                 </button>
@@ -108,7 +115,7 @@ class SideBar extends React.Component {
           </div>
         </Col>
         <div className="spotify-bg-sidebar2 d-flex d-md-none justify-content-around w-100 ml-0">
-          <Link className="pl-4 mb-2" to="/home">
+          <Link className="pl-4 mb-2" to="app/home">
             <div className="spotify-text-primary d-flex align-items-center justify-content-center flex-column pt-1">
               <i className="fas fa-home fa-2x mt-3 mb-1"></i>
               <h6>Home</h6>
