@@ -42,7 +42,7 @@ class Login extends React.Component {
             </div>
             <div className="row mb-2">
               <div className="col col-md-6 m-auto">
-                <a>
+                <a href={`${process.env.REACT_APP_BE_URL}/users/facebookLogin`}>
                   <button
                     type="button"
                     className="btn text-white   rounded-pill w-100"
