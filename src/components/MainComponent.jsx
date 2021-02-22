@@ -31,14 +31,14 @@ class MainComponent extends React.Component {
             )}
           />
 
-          <Route path="app/favorites" component={Likes} />
+          <Route path="/favorites" component={Likes} />
           <Route
-            path="app/artistDetails/:id"
+            path="/artistDetails/:id"
             exact
             render={(props) => <ArtistDetails {...props} />}
           />
           <Route
-            path="app/albumDetails/:id"
+            path="/albumDetails/:id"
             exact
             render={(props) => <AlbumDetails {...props} />}
           />
